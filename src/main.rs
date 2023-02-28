@@ -6,6 +6,7 @@ use hotwatch::{blocking::{Hotwatch, Flow}, Event};
 
 fn main() {
 
+
     let curr_dir = current_dir().expect("couldn't access current working directory");
     let src_dir = curr_dir.join("src");
 
@@ -34,13 +35,13 @@ fn create_handler(output_path: PathBuf) -> impl FnMut(Event) -> Flow {
 }
 
 mod cmd {
-    use std::{process::{Child, Command}, path::PathBuf, io};
+    use std::{process::{Command, Output}, path::PathBuf, io};
 
-    pub fn xdg_open(output_path: &PathBuf) -> io::Result::<Child> {
-        Command::new("xdg-open").arg(&output_path).spawn()
+    pub fn xdg_open(output_path: &PathBuf) -> io::Result::<Output> {
+        Command::new("xdg-open").arg(&output_path).output()
     }
 
-    pub fn tectonic_build() -> io::Result<Child> {
-        Command::new("tectonic").arg("-X").arg("build").spawn()
+    pub fn tectonic_build() -> io::Result<Output> {
+        Command::new("tectonic").arg("-X").arg("build").output()
     }
 }
