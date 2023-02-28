@@ -8,7 +8,7 @@ Note that it assumes the `xdg-open` command is available. It will thus probably 
 ### Installation
 Simply clone the repo and then install like this:
 ```console
-git clone https://github.com/Einliterflasche/seismo
-cd seismo
-cargo install --path .
+$ git clone https://github.com/Einliterflasche/seismo
+$ cd seismo
+$ cargo install --path .
 ```
