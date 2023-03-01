@@ -27,9 +27,9 @@ $ cargo install --path .
 ```
 
 ### Prerequisites
- - a compatible `tectonic` version (`0.12`)
+ - a compatible `tectonic` version (tested versions: `0.12`)
  - `xdg-open` from [xdg-utils](https://freedesktop.org/wiki/Software/xdg-utils/) must be available
 
 ### Limitations
  - The script does _not_ listen for changes to `Tectonic.toml`. If you change the file, you will have to restart the script.
- - The script does _not_ close the file viewer after opening it but rather 
+ - The script does _not_ close the file viewer after opening it. For 
