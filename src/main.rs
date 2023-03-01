@@ -1,16 +1,28 @@
+mod args;
 mod tectonic;
 
 use std::{env::current_dir, path::PathBuf};
 
+use clap::Parser;
 use hotwatch::{blocking::{Hotwatch, Flow}, Event};
 
-fn main() {
+use crate::tectonic::TectonicConfig;
 
+fn main() {
+    let args = args::MainArgs::parse();
 
     let curr_dir = current_dir().expect("couldn't access current working directory");
-    let src_dir = curr_dir.join("src");
 
-    let config = tectonic::TectonicConfig::load().unwrap();
+    let root_dir = if let Some(path) = args.path {
+        if path.is_relative() { curr_dir.join(path) } 
+        else { path }
+    } else {
+        curr_dir
+    };
+
+    let src_dir = root_dir.join("src");
+
+    let config = TectonicConfig::load(&root_dir).unwrap();
 
     let output_path = config.get_output_path();
 

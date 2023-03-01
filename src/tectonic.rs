@@ -3,6 +3,8 @@ use std::{path::PathBuf, fs::File, io::Read};
 use anyhow::Result;
 use serde::Deserialize;
 
+const CONFIG_NAME: &str = "Tectonic.toml";
+
 #[derive(Deserialize, Debug)]
 pub struct TectonicConfig {
     doc: Doc,
@@ -23,22 +25,23 @@ struct Output {
 }
 
 impl TectonicConfig {
-    pub fn load() -> Result<TectonicConfig> {
-        let mut file = File::open("Tectonic.toml")?;
+    pub fn load(path: &PathBuf) -> Result<TectonicConfig> {
+        // Open the config file
+        let mut file = File::open(path.join(CONFIG_NAME)).unwrap();
+        // Read it to a string
         let mut config_string = String::new();
-        file.read_to_string(&mut config_string).expect("Couldn't read config file `Tectonic.toml`");
+        file.read_to_string(&mut config_string).expect("couldn't read `Tectonic.toml`");
 
-        let res = toml::from_str(&config_string);
-        if res.is_err() {
-            let err = res.unwrap_err();
-            panic!("Couln't parse `Tectonic.toml`: {}", err.message());
-        }
-        Ok(res.unwrap())
+        // Parse to config struct
+        let res: TectonicConfig = toml::from_str(&config_string)?;
+        Ok(res)
     }
 
     /// Get a path to the output file _relative_ to the `Tectonic.toml` config file.
     pub fn get_output_path(&self) -> PathBuf {
         let output = &self.outputs[0];
-        PathBuf::from("build").join(&self.doc.name).join(format!("{}.{}", output.name, output.file_type))
+        PathBuf::from("build")
+            .join(&self.doc.name)
+            .join(format!("{}.{}", output.name, output.file_type))
     }
 }
