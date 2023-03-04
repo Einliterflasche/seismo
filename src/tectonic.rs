@@ -7,14 +7,8 @@ const CONFIG_NAME: &str = "Tectonic.toml";
 
 #[derive(Deserialize, Debug)]
 pub struct TectonicConfig {
-    doc: Doc,
     #[serde(rename = "output")]
     outputs: Vec<Output>
-}
-
-#[derive(Deserialize, Debug)]
-struct Doc {
-    name: String
 }
 
 #[derive(Deserialize, Debug)]
@@ -41,7 +35,7 @@ impl TectonicConfig {
     pub fn get_output_path(&self) -> PathBuf {
         let output = &self.outputs[0];
         PathBuf::from("build")
-            .join(&self.doc.name)
+            .join(&output.name)
             .join(format!("{}.{}", output.name, output.file_type))
     }
 }

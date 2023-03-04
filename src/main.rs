@@ -30,7 +30,8 @@ fn main() {
     let mut hotwatch = Hotwatch::new().expect("Failed to initialize hotwatch");
 
     // Build and open once, then start listening for changes
-    cmd::build_and_open(&output_path).unwrap();
+    cmd::tectonic_build().unwrap();
+    cmd::xdg_open(&output_path).unwrap();
     hotwatch.watch(
         &src_dir, 
         create_handler(output_path)
@@ -42,7 +43,7 @@ fn main() {
 /// Create the handler function which is called upon a file change
 fn create_handler(output_path: PathBuf) -> impl FnMut(Event) -> Flow {  
     move |_: Event| {
-        cmd::build_and_open(&output_path).unwrap();
+        println!("Errors:\n{}", std::str::from_utf8(&cmd::build_and_open(&output_path).unwrap().stderr).unwrap());
         Flow::Continue
     }
 }
@@ -52,17 +53,16 @@ fn create_handler(output_path: PathBuf) -> impl FnMut(Event) -> Flow {
 mod cmd {
     use std::{process::{Command, Output}, path::PathBuf, io};
 
-    pub fn build_and_open(output_path: &PathBuf) -> Result<(), anyhow::Error> {
+    pub fn build_and_open(output_path: &PathBuf) -> io::Result<Output> {
         xdg_open(output_path)?;
-        tectonic_build()?;
-        Ok(())
+        tectonic_build()
     }
 
-    fn xdg_open(output_path: &PathBuf) -> io::Result::<Output> {
+    pub fn xdg_open(output_path: &PathBuf) -> io::Result::<Output> {
         Command::new("xdg-open").arg(&output_path).output()
     }
 
-    fn tectonic_build() -> io::Result<Output> {
+    pub fn tectonic_build() -> io::Result<Output> {
         Command::new("tectonic").arg("-X").arg("build").output()
     }
 }
