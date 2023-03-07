@@ -32,4 +32,4 @@ $ cargo install --path .
 
 ### Limitations
  - The script does _not_ listen for changes to `Tectonic.toml`. If you change the file, you will have to restart the script.
- - The script does _not_ close the file viewer after opening it. For 
+ - The script does _not_ close the file viewer after opening it. This _might_ lead to your pdf viewer reopening again and again.

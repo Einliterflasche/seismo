@@ -43,7 +43,8 @@ fn main() {
 /// Create the handler function which is called upon a file change
 fn create_handler(output_path: PathBuf) -> impl FnMut(Event) -> Flow {  
     move |_: Event| {
-        println!("Errors:\n{}", std::str::from_utf8(&cmd::build_and_open(&output_path).unwrap().stderr).unwrap());
+        let res = cmd::build_and_open(&output_path).unwrap();
+        println!("Errors:\n{}", std::str::from_utf8(&res[1].stderr).unwrap());
         Flow::Continue
     }
 }
@@ -53,9 +54,8 @@ fn create_handler(output_path: PathBuf) -> impl FnMut(Event) -> Flow {
 mod cmd {
     use std::{process::{Command, Output}, path::PathBuf, io};
 
-    pub fn build_and_open(output_path: &PathBuf) -> io::Result<Output> {
-        xdg_open(output_path)?;
-        tectonic_build()
+    pub fn build_and_open(output_path: &PathBuf) -> io::Result<[Output; 2]> {
+        Ok([xdg_open(output_path)?, tectonic_build()?])
     }
 
     pub fn xdg_open(output_path: &PathBuf) -> io::Result::<Output> {
