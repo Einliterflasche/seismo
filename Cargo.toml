@@ -2,8 +2,11 @@
 name = "seismo"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Einliterflasche <einliterflasche@pm.me>"]
+license = "MIT OR Apache-2.0"
+description = "A light script for automatically building your Tectonic projects"
+repository = "https://github.com/einliterflasche/seismo"
+tags = ["script", "latex", "tectonic"]
 
 [dependencies]
 clap = { version = "4.1", features = ["derive"] }
@@ -11,3 +14,4 @@ hotwatch = "0.4"
 serde = { version = "1", features = ["derive"] }
 toml = "0.7"
 anyhow = "1.0"
+
