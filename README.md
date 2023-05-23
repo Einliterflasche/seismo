@@ -19,11 +19,9 @@ Started watching `/path/to/foo`
 ```
 
 ### Installation
-Simply clone the repo and then install like this:
+Simply use the `cargo install` command:
 ```console
-$ git clone https://github.com/Einliterflasche/seismo
-$ cd seismo
-$ cargo install --path .
+$ cargo install seismo
 ```
 
 ### Prerequisites
